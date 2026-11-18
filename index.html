@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>结构化文档工作台</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="parser.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>{</span><i>/</i><span>}</span></div>
+        <div>
+          <h1>结构化文档工作台</h1>
+          <p>JSON / XML FORMATTER</p>
+        </div>
+      </div>
+      <div class="privacy-badge" title="没有网络请求、账号登录或用户信息权限">
+        <span class="privacy-dot" aria-hidden="true"></span>
+        仅在本机处理
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel input-panel" aria-labelledby="input-title">
+        <div class="panel-header">
+          <div class="panel-heading">
+            <span class="panel-number">01</span>
+            <h2 id="input-title">原始文本</h2>
+            <button id="historyButton" class="history-button" type="button" title="查看最近 20 次解析记录">历史记录</button>
+          </div>
+          <span id="inputSize" class="subtle-text">0 字符</span>
+        </div>
+
+        <div class="source-editor">
+          <textarea id="sourceInput" aria-label="原始 JSON 或 XML 文本" placeholder="在此粘贴 JSON 或 XML…&#10;&#10;可直接粘贴混有日志、时间戳、请求前后缀的文本，格式化时会自动提取其中的文档。" spellcheck="false" autocapitalize="off"></textarea>
+        </div>
+
+        <div id="errorMessage" class="error-message" role="alert" hidden></div>
+
+        <div class="input-footer">
+          <p>自动忽略文档前后的杂散文本</p>
+          <div class="input-actions">
+            <button id="clearButton" class="button button-quiet" type="button">清空</button>
+            <button id="formatButton" class="button button-primary" type="button">
+              <span>格式化</span>
+              <kbd>Ctrl ↵</kbd>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel tree-panel" aria-labelledby="tree-title">
+        <div class="panel-header">
+          <div class="panel-heading">
+            <span class="panel-number">02</span>
+            <h2 id="tree-title">文档树</h2>
+          </div>
+          <span id="nodeCount" class="subtle-text"></span>
+        </div>
+
+        <div class="tree-toolbar">
+          <button id="expandAllButton" class="text-button" type="button" disabled>全部展开</button>
+          <span aria-hidden="true">·</span>
+          <button id="collapseAllButton" class="text-button" type="button" disabled>全部收起</button>
+        </div>
+
+        <div id="treeView" class="tree-view">
+          <div id="treeEmpty" class="empty-state">
+            <div class="empty-tree-icon" aria-hidden="true"><span></span><span></span><span></span></div>
+            <h3>等待解析文档</h3>
+            <p>格式化后，可点击节点<br>展开或收起内容</p>
+          </div>
+          <ul id="treeRoot" class="tree-list" role="tree" aria-label="解析后的文档树" hidden></ul>
+        </div>
+      </section>
+
+      <div id="columnResizer" class="column-resizer" role="separator" tabindex="0" aria-label="调整文档树与格式化结果宽度，使用左右方向键也可调节" aria-orientation="vertical" aria-valuemin="240"></div>
+
+      <section class="panel output-panel" aria-labelledby="output-title">
+        <div class="panel-header output-heading">
+          <div class="panel-heading">
+            <span class="panel-number">03</span>
+            <h2 id="output-title">格式化结果</h2>
+            <span id="documentType" class="type-badge" hidden></span>
+          </div>
+          <span id="lineCount" class="subtle-text"></span>
+        </div>
+
+        <div class="output-toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+            <input id="searchInput" type="search" placeholder="搜索文档关键字" aria-label="搜索格式化后的文档" disabled>
+          </div>
+          <span id="matchCount" class="match-count" aria-live="polite"></span>
+          <div class="search-navigation">
+            <button id="previousMatchButton" class="icon-button" type="button" title="上一个匹配项（Shift + Enter）" aria-label="上一个匹配项" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"></path></svg>
+            </button>
+            <button id="nextMatchButton" class="icon-button" type="button" title="下一个匹配项（Enter）" aria-label="下一个匹配项" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
+            </button>
+          </div>
+          <button id="copyButton" class="button button-copy" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+            复制文档
+          </button>
+        </div>
+
+        <div id="outputView" class="output-view">
+          <div id="outputEmpty" class="empty-state output-empty">
+            <div class="empty-code-icon" aria-hidden="true"><span>&lt;</span><i>/</i><span>&gt;</span></div>
+            <h3>格式化结果将在这里显示</h3>
+            <p>支持 JSON 与 XML 自动识别<br>解析内容不会离开本机</p>
+          </div>
+          <pre id="formattedOutput" tabindex="0" aria-label="格式化后的文档" hidden><code id="outputCode"></code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="status-bar">
+      <div class="status-content">
+        <span id="statusDot" class="status-dot" aria-hidden="true"></span>
+        <span id="statusMessage" role="status">就绪，所有解析均在本地完成</span>
+      </div>
+      <span>无需登录 · 无数据上传</span>
+    </footer>
+  </div>
+
+  <dialog id="historyDialog" class="history-dialog" aria-labelledby="historyTitle">
+    <header class="history-dialog-header">
+      <div>
+        <h2 id="historyTitle">解析历史</h2>
+        <p>最近 20 次成功解析 · 仅保存在本机</p>
+      </div>
+      <button id="closeHistoryButton" class="icon-button" type="button" aria-label="关闭历史记录">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+    </header>
+
+    <div class="history-content">
+      <div id="historyEmpty" class="history-empty" hidden>
+        <h3>暂无解析历史</h3>
+        <p>成功格式化后，会自动保存最近 20 次解析记录</p>
+      </div>
+      <ul id="historyList" class="history-list" aria-label="最近 20 次解析记录"></ul>
+    </div>
+
+    <footer class="history-dialog-footer">
+      <span id="historySummary" class="subtle-text">最多保留 20 条记录</span>
+      <div class="history-actions">
+        <button id="cancelHistoryButton" class="button button-quiet" type="button">取消</button>
+        <button id="loadHistoryButton" class="button button-primary" type="button" disabled>加载记录</button>
+      </div>
+    </footer>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
