@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Structured Document Workbench",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Format and inspect JSON / XML locally with log filtering, document tree, search & copy, and history. No login required.",
+    "description": "Extension short description"
+  },
+  "actionTitle": {
+    "message": "Open Structured Document Workbench",
+    "description": "Toolbar action title"
+  }
+}
