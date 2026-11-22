@@ -5,9 +5,12 @@
 
   **在本机提取、解析并格式化 JSON / XML**
 
-  一款零权限、零依赖的 Microsoft Edge 扩展，支持日志文本过滤、交互式文档树、搜索复制和本地历史记录。
+  一款零权限、零依赖的浏览器扩展，支持日志文本过滤、交互式文档树、搜索复制和本地历史记录。
 
   <p>
+    <a href="https://chromewebstore.google.com/detail/%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%87%E6%A1%A3%E5%B7%A5%E4%BD%9C%E5%8F%B0/kefpohdppnnoelcfggbhepdanjodgpoc">
+      <img src="https://img.shields.io/badge/Chrome_Web_Store-扩展商店-4285F4?logo=googlechrome&logoColor=white" alt="Chrome Web Store">
+    </a>
     <a href="https://microsoftedge.microsoft.com/addons/detail/%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%87%E6%A1%A3%E5%B7%A5%E4%BD%9C%E5%8F%B0/lgappabghgabcpnpbbliphfhdceioflp">
       <img src="https://img.shields.io/badge/Microsoft_Edge-扩展商店-0078D7?logo=microsoftedge&logoColor=white" alt="Microsoft Edge 扩展商店">
     </a>
@@ -44,9 +47,12 @@
 
 ## 安装
 
-### 方式一：从 Microsoft Edge 扩展商店安装（推荐）
+### 方式一：从扩展商店安装（推荐）
 
-打开 [结构化文档工作台 - Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%87%E6%A1%A3%E5%B7%A5%E4%BD%9C%E5%8F%B0/lgappabghgabcpnpbbliphfhdceioflp)，点击 **获取**，然后点击浏览器工具栏中的扩展图标。
+- **Google Chrome**：打开 [结构化文档工作台 - Chrome Web Store](https://chromewebstore.google.com/detail/%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%87%E6%A1%A3%E5%B7%A5%E4%BD%9C%E5%8F%B0/kefpohdppnnoelcfggbhepdanjodgpoc)，点击 **添加至 Chrome**。
+- **Microsoft Edge**：打开 [结构化文档工作台 - Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%87%E6%A1%A3%E5%B7%A5%E4%BD%9C%E5%8F%B0/lgappabghgabcpnpbbliphfhdceioflp)，点击 **获取**。
+
+安装完成后，点击浏览器工具栏中的扩展图标即可使用。
 
 ### 方式二：从源代码安装
 
@@ -54,7 +60,7 @@
 git clone https://github.com/tonvchung/structured-document-workbench.git
 ```
 
-1. 在 Edge 中打开 `edge://extensions/`。
+1. 在 Edge 或 Chrome 中打开扩展管理页（`edge://extensions/` 或 `chrome://extensions/`）。
 2. 开启 **开发人员模式**。
 3. 点击 **加载解压缩的扩展**。
 4. 选择克隆下来的 `structured-document-workbench` 目录，即包含 `manifest.json` 的这一层。
@@ -188,7 +194,7 @@ structured-document-workbench/
 1. Fork 本仓库并创建功能分支。
 2. 保持零运行时依赖、零扩展权限和无网络请求的隐私设计。
 3. 修改解析器时补充对应测试，并运行 `node --test tests/parser.test.cjs`。
-4. 在 Edge 开发者模式中验证界面、复制、搜索和历史记录相关改动。
+4. 在 Chrome 或 Edge 开发者模式中验证界面、复制、搜索和历史记录相关改动。
 5. 不要提交包含真实凭据、个人数据或内部日志的测试样例。
 
 ## 开源协议
