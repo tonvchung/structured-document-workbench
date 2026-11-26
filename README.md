@@ -175,7 +175,7 @@ const result = parseDocument('{"ok":true}');
 
 ```text
 structured-document-workbench/
-├── _locales/zh_CN/          # 扩展名称与描述
+├── _locales                 # 扩展名称与描述的本地化信息
 ├── icons/                   # 扩展图标
 ├── tests/
 │   └── parser.test.cjs      # 解析器及清单权限测试
